@@ -427,24 +427,6 @@ The expected result is increased processing throughput when more workers are ava
 
 ### Test 4 — Worker Failure
 
-Stop one worker while jobs are being processed.
-
-Expected result:
-
-```text
-Worker fails
-     ↓
-Job remains/retries
-     ↓
-Another worker processes it
-     ↓
-Job completes
-```
-
-This demonstrates fault tolerance.
-
----
-## 10. Failure Scenario
 
 If one application server fails:
 
@@ -460,7 +442,45 @@ If one application server fails:
 The Load Balancer detects the unhealthy server and sends new requests to healthy instances.
 
 ---
+## 12. Handling Increasing Usage
 
+The architecture is designed to scale horizontally.
+
+### Normal workload
+
+```text
+100 Meetings
+     ↓
+Queue
+     ↓
+3 Workers
+```
+
+### Increased workload
+
+```text
+1,000 Meetings
+      ↓
+    Queue
+      ↓
+6 Workers
+```
+
+### Very high workload
+
+```text
+10,000 Meetings
+       ↓
+     Queue
+       ↓
+More Workers
+```
+
+Instead of replacing one server with an increasingly powerful server, additional instances can be added.
+
+This allows the system to increase processing capacity as demand grows.
+
+---
 ## 11. Assumptions
  
 - Users are authenticated employees.
