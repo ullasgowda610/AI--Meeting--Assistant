@@ -61,46 +61,68 @@ The proposed architecture aims to:
 9. Demonstrate how Network Foundations concepts can solve a real-world system problem.
 
 ## 4. Architecture
-![AI Meeting Assistant Architecture](architecture.png)
-
 The proposed system uses multiple servers, a message queue, processing workers, secure communication, and real-time notifications.
 
 ### Architecture Flow
 
 ```text
-                         USER
-                          │
-                        HTTPS
-                          │
-                          ▼
-                   Load Balancer
-                          │
-                 ┌────────┴────────┐
-                 ▼                 ▼
-            API Server 1      API Server 2
-                 │                 │
-                 └────────┬────────┘
-                          ▼
-                    Message Queue
-                          │
-                ┌─────────┼─────────┐
-                ▼         ▼         ▼
-             Worker 1  Worker 2  Worker 3
-                │         │         │
-                └─────────┼─────────┘
-                          ▼
-                     AI Processing
-                          │
-                          ▼
-                       Database
-                          │
-                          ▼
-                     Notification
-                          │
-                       WebSocket
-                          │
-                          ▼
-                         USER
+                  AI MEETING ASSISTANT
+                           │
+                           ▼
+                  ┌─────────────────┐
+                  │     USERS       │
+                  │   Employees     │
+                  └────────┬────────┘
+                           │
+                       HTTPS / TLS
+                           │
+                           ▼
+                  ┌─────────────────┐
+                  │  LOAD BALANCER  │
+                  └────────┬────────┘
+                           │
+              ┌────────────┴────────────┐
+              ▼                         ▼
+       ┌──────────────┐          ┌──────────────┐
+       │ API SERVER 1 │          │ API SERVER 2 │
+       └──────┬───────┘          └──────┬───────┘
+              └────────────┬────────────┘
+                           │
+                           ▼
+                  ┌─────────────────┐
+                  │   API GATEWAY   │
+                  │ Auth + Rate     │
+                  │ Limiting        │
+                  └────────┬────────┘
+                           │
+                           ▼
+                  ┌─────────────────┐
+                  │  MESSAGE QUEUE  │
+                  │ Kafka / RabbitMQ │
+                  │ / AWS SQS        │
+                  └────────┬────────┘
+                           │
+                ┌──────────┴──────────┐
+                ▼                     ▼
+       ┌────────────────┐    ┌─────────────────┐
+       │ TRANSCRIPTION  │    │ AI SUMMARIZATION│
+       │    SERVICE     │───►│     SERVICE     │
+       └────────────────┘    └────────┬────────┘
+                                      │
+                                      ▼
+                              ┌───────────────┐
+                              │   DATABASE    │
+                              └───────┬───────┘
+                                      │
+                                      ▼
+                              ┌───────────────┐
+                              │ NOTIFICATION  │
+                              │ Email/Teams   │
+                              └───────┬───────┘
+                                      │
+                                      ▼
+                               User receives
+                              summary + tasks
 ```
 
 
@@ -116,214 +138,8 @@ The proposed system uses multiple servers, a message queue, processing workers, 
 8. Results are stored in the database.
 9. The Notification Service informs the user when the summary is ready.
 
-# 6. Component Responsibilities
 
-## 6.1 User / Client
-
-The employee uses the meeting-assistant application.
-
-The client can:
-
-* Send meeting-related requests.
-* View meeting information.
-* Request summaries.
-* Receive notifications when processing is complete.
-
-Communication with the backend uses HTTPS.
-
-
-## 6.2 HTTPS and TLS
-
-The client communicates with the backend using **HTTPS**.
-
-```text
-User
- │
- │ HTTPS + TLS
- ▼
-Backend
-```
-
-HTTPS provides secure communication, while TLS encrypts the data transmitted between the client and server.
-
-This is important because meeting transcripts and summaries may contain sensitive company information.
-
----
-
-## 6.3 Load Balancer
-
-The load balancer distributes incoming requests between multiple API servers.
-
-```text
-                Load Balancer
-                 /         \
-                ↓           ↓
-           API Server 1  API Server 2
-```
-
-Without a load balancer, a single server could become overloaded.
-
-With multiple servers, traffic can be distributed across available instances.
-
-This improves:
-
-* Availability
-* Scalability
-* Reliability
-
----
-
-## 6.4 API Servers
-
-API servers handle requests from users and communicate with internal services.
-
-For example:
-
-```text
-User
- ↓
-API Server
- ↓
-Create processing job
- ↓
-Message Queue
-```
-
-Multiple API servers can handle requests simultaneously.
-
-If demand increases, additional API server instances can be added.
-
----
-
-## 6.5 Message Queue
-
-The message queue is used to temporarily store processing jobs.
-
-For example:
-
-```text
-Meeting 1 ─┐
-Meeting 2 ─┤
-Meeting 3 ─┤
-Meeting 4 ─┤
-Meeting 5 ─┤
-           ▼
-       Message Queue
-```
-
-Workers then process the jobs from the queue.
-
-The queue prevents a sudden increase in meeting activity from directly overwhelming the processing services.
-
-### Example
-
-If 1,000 meetings finish at approximately the same time:
-
-```text
-1000 Jobs
-   ↓
-Queue
-   ↓
-Workers process jobs gradually
-```
-
-This helps absorb traffic spikes.
-
----
-
-## 6.6 Processing Workers
-
-Workers perform the processing required for each meeting.
-
-A worker can:
-
-1. Receive a meeting-processing job.
-2. Process the transcript.
-3. Send the transcript to the AI service.
-4. Generate the summary.
-5. Extract important updates.
-6. Store the result.
-
-Multiple workers can operate in parallel:
-
-```text
-             Queue
-                │
-       ┌────────┼────────┐
-       ↓        ↓        ↓
-    Worker 1 Worker 2 Worker 3
-```
-
-This increases throughput.
-
-If the workload increases, more workers can be added.
-
----
-
-## 6.7 AI Processing
-
-The AI processing component receives meeting transcripts and generates useful information.
-
-Example:
-
-```text
-Transcript
-    ↓
-AI Processing
-    ↓
-Summary
-    ↓
-Important Updates
-    ↓
-Action Items
-```
-
-The AI model itself is outside the main scope of this project. The project focuses on how the surrounding network and system architecture delivers work to and from the AI processing component reliably.
-
----
-
-## 6.8 Database
-
-The database stores information such as:
-
-* Meeting details
-* Transcripts
-* Summaries
-* Important updates
-* Action items
-* Processing status
-
-The database allows users to retrieve meeting information later.
-
----
-
-## 6.9 WebSocket
-
-WebSocket can be used to provide real-time notifications.
-
-Instead of the client repeatedly asking:
-
-```text
-"Is my summary ready?"
-```
-
-the server can notify the client when processing is complete.
-
-```text
-AI Processing Complete
-          ↓
-      WebSocket
-          ↓
-        User
-          ↓
-"Your meeting summary is ready."
-```
-
-This helps provide a responsive user experience.
-
----
-
-## 7. Network Foundations Concepts Used
+## 6. Network Foundations Concepts Used
 
 | Concept                 | Application in this project                                                    |
 | ----------------------- | ------------------------------------------------------------------------------ |
@@ -341,21 +157,21 @@ This helps provide a responsive user experience.
 
 ---
 
-## 8. Reliability
+## 7. Reliability
 - Multiple instances
 - load-balancer health checks
 - durable queues
 - retries
 - database backups/replication and monitoring help prevent a single failure from stopping the service.
 
-## 9. Security
+## 8. Security
 - Use HTTPS/TLS
 - authentication
 - authorization/RBAC
 - encryption at rest
 - secure secret storage and audit logging.
 
-## 10. Scalability
+## 9. Scalability
 
 The architecture supports increasing usage by adding more application and processing instances.
 
@@ -375,7 +191,7 @@ Workers can also be increased based on queue length and system load.
 
 ---
 
-## 11. Demonstration Plan
+## 10. Demonstration Plan
 
 A simple demonstration can be used to show how the architecture behaves under different workloads.
 
@@ -440,7 +256,7 @@ If one application server fails:
 The Load Balancer detects the unhealthy server and sends new requests to healthy instances.
 
 ---
-## 12. Handling Increasing Usage
+## 11. Handling Increasing Usage
 
 The architecture is designed to scale horizontally.
 
@@ -479,7 +295,7 @@ Instead of replacing one server with an increasingly powerful server, additional
 This allows the system to increase processing capacity as demand grows.
 
 ---
-## 13. Assumptions
+## 12. Assumptions
  
 - Users are authenticated employees.
 - Meetings are conducted using approved platforms.
@@ -487,7 +303,7 @@ This allows the system to increase processing capacity as demand grows.
 - Summary generation is expected within a few minutes after the meeting.
 - Cloud infrastructure is available for deployment.
 
-## 14. Conclusion
+## 13. Conclusion
 
 The proposed AI Meeting Assistant architecture uses several Network Foundations concepts to create a system that can support increasing usage.
 HTTPS and TLS provide secure communication. A load balancer distributes requests across multiple API servers. A message queue absorbs sudden increases in processing requests, while multiple workers process jobs in parallel. The system can scale horizontally by adding more servers and workers as demand increases.
