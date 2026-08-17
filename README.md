@@ -461,10 +461,19 @@ The Load Balancer detects the unhealthy server and sends new requests to healthy
 
 ---
 
-## 11.
+## 11. Assumptions
+ 
+- Users are authenticated employees.
+- Meetings are conducted using approved platforms.
+- Meeting information may contain confidential data.
+- Summary generation is expected within a few minutes after the meeting.
+- Cloud infrastructure is available for deployment.
 
+## 12. Conclusion
 
+The proposed architecture separates user requests from heavy AI processing using load balancing, asynchronous messaging and scalable worker services.
 
+This design helps the AI Meeting Assistant remain responsive, reliable, secure and available as the number of meetings increases.
 
 
 
