@@ -61,8 +61,6 @@ The proposed architecture aims to:
 9. Demonstrate how Network Foundations concepts can solve a real-world system problem.
 
 ## 4. Architecture
-# 4. Proposed Architecture
-
 ![AI Meeting Assistant Architecture](architecture.png)
 
 The proposed system uses multiple servers, a message queue, processing workers, secure communication, and real-time notifications.
@@ -388,3 +386,5 @@ Server 1 + Server 2 + Server 3 + Server 4 + Server 5
 Workers can also be increased based on queue length and system load.
 
 ---
+
+## 10.
