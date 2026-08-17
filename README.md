@@ -355,3 +355,36 @@ This helps provide a responsive user experience.
 
 ---
 
+## 7. Reliability
+- Multiple instances
+- load-balancer health checks
+- durable queues
+- retries
+- database backups/replication and monitoring help prevent a single failure from stopping the service.
+
+## 8. Security
+- Use HTTPS/TLS
+- authentication
+- authorization/RBAC
+- encryption at rest
+- secure secret storage and audit logging.
+
+## 9. Scalability
+
+The architecture supports increasing usage by adding more application and processing instances.
+
+For example:
+
+```text
+Low traffic
+     |
+Server 1 + Server 2
+
+High traffic
+     |
+Server 1 + Server 2 + Server 3 + Server 4 + Server 5
+```
+
+Workers can also be increased based on queue length and system load.
+
+---
