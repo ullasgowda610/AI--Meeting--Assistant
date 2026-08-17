@@ -64,67 +64,7 @@ The proposed architecture aims to:
 The proposed system uses multiple servers, a message queue, processing workers, secure communication, and real-time notifications.
 
 ### Architecture Flow
-
-```text
-                  AI MEETING ASSISTANT
-                           │
-                           ▼
-                  ┌─────────────────┐
-                  │     USERS       │
-                  │   Employees     │
-                  └────────┬────────┘
-                           │
-                       HTTPS / TLS
-                           │
-                           ▼
-                  ┌─────────────────┐
-                  │  LOAD BALANCER  │
-                  └────────┬────────┘
-                           │
-              ┌────────────┴────────────┐
-              ▼                         ▼
-       ┌──────────────┐          ┌──────────────┐
-       │ API SERVER 1 │          │ API SERVER 2 │
-       └──────┬───────┘          └──────┬───────┘
-              └────────────┬────────────┘
-                           │
-                           ▼
-                  ┌─────────────────┐
-                  │   API GATEWAY   │
-                  │ Auth + Rate     │
-                  │ Limiting        │
-                  └────────┬────────┘
-                           │
-                           ▼
-                  ┌─────────────────┐
-                  │  MESSAGE QUEUE  │
-                  │ Kafka / RabbitMQ │
-                  │ / AWS SQS        │
-                  └────────┬────────┘
-                           │
-                ┌──────────┴──────────┐
-                ▼                     ▼
-       ┌────────────────┐    ┌─────────────────┐
-       │ TRANSCRIPTION  │    │ AI SUMMARIZATION│
-       │    SERVICE     │───►│     SERVICE     │
-       └────────────────┘    └────────┬────────┘
-                                      │
-                                      ▼
-                              ┌───────────────┐
-                              │   DATABASE    │
-                              └───────┬───────┘
-                                      │
-                                      ▼
-                              ┌───────────────┐
-                              │ NOTIFICATION  │
-                              │ Email/Teams   │
-                              └───────┬───────┘
-                                      │
-                                      ▼
-                               User receives
-                              summary + tasks
-```
-
+![AI Meeting Assistant Architecture](AI-ASSISATNT-ARCHITECTURE.png)
 
 ## 5. System Workflow
 
@@ -263,7 +203,7 @@ The architecture is designed to scale horizontally.
 ### Normal workload
 
 ```text
-100 Meetings
+10 Meetings
      ↓
 Queue
      ↓
@@ -273,7 +213,7 @@ Queue
 ### Increased workload
 
 ```text
-1,000 Meetings
+15 Meetings
       ↓
     Queue
       ↓
@@ -283,7 +223,7 @@ Queue
 ### Very high workload
 
 ```text
-10,000 Meetings
+25 Meetings
        ↓
      Queue
        ↓
