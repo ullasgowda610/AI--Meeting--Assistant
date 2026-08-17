@@ -103,7 +103,6 @@ The proposed system uses multiple servers, a message queue, processing workers, 
                          USER
 ```
 
----
 
 ## 5. System Workflow
 
@@ -132,7 +131,6 @@ The client can:
 
 Communication with the backend uses HTTPS.
 
----
 
 ## 6.2 HTTPS and TLS
 
@@ -381,7 +379,7 @@ Workers can also be increased based on queue length and system load.
 
 A simple demonstration can be used to show how the architecture behaves under different workloads.
 
-### Test 1 — Normal Load
+### Test 1 : Normal Load
 
 Send a small number of meeting-processing jobs.
 
@@ -393,7 +391,7 @@ Jobs → Queue → Workers → Completed
 
 Processing should complete normally with low waiting time.
 
-### Test 2 — Increased Load
+### Test 2 : Increased Load
 
 Send a much larger number of jobs.
 
@@ -411,7 +409,7 @@ All jobs eventually complete
 
 The queue prevents all requests from directly overwhelming the workers.
 
-### Test 3 — Scaling
+### Test 3 : Scaling
 
 Run the same workload with different numbers of workers.
 
@@ -425,7 +423,7 @@ For example:
 
 The expected result is increased processing throughput when more workers are available.
 
-### Test 4 — Worker Failure
+### Test 4 : Worker Failure
 
 
 If one application server fails:
@@ -481,7 +479,7 @@ Instead of replacing one server with an increasingly powerful server, additional
 This allows the system to increase processing capacity as demand grows.
 
 ---
-## 11. Assumptions
+## 13. Assumptions
  
 - Users are authenticated employees.
 - Meetings are conducted using approved platforms.
@@ -489,15 +487,11 @@ This allows the system to increase processing capacity as demand grows.
 - Summary generation is expected within a few minutes after the meeting.
 - Cloud infrastructure is available for deployment.
 
-## 12. Conclusion
+## 14. Conclusion
 
 The proposed AI Meeting Assistant architecture uses several Network Foundations concepts to create a system that can support increasing usage.
-
 HTTPS and TLS provide secure communication. A load balancer distributes requests across multiple API servers. A message queue absorbs sudden increases in processing requests, while multiple workers process jobs in parallel. The system can scale horizontally by adding more servers and workers as demand increases.
-
-WebSocket can provide real-time notifications when meeting summaries are ready. Multiple workers and queued jobs also improve reliability by reducing the impact of individual component failures.
-
-Overall, the architecture is designed to keep the AI Meeting Assistant responsive, reliable, secure, available, and scalable as the number of meetings increases.
+WebSocket can provide real-time notifications when meeting summaries are ready. Multiple workers and queued jobs also improve reliability by reducing the impact of individual component failures.Overall, the architecture is designed to keep the AI Meeting Assistant responsive, reliable, secure, available, and scalable as the number of meetings increases.
 
 
 
