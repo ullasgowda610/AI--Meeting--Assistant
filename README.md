@@ -444,9 +444,24 @@ Job completes
 This demonstrates fault tolerance.
 
 ---
+## 10. Failure Scenario
 
+If one application server fails:
 
+```text
+             Load Balancer
+              /          \
+             ↓            ↓
+        Server 1       Server 2
+                          X
+                       FAILED
+```
 
+The Load Balancer detects the unhealthy server and sends new requests to healthy instances.
+
+---
+
+## 11.
 
 
 
