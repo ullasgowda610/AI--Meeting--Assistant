@@ -491,9 +491,13 @@ This allows the system to increase processing capacity as demand grows.
 
 ## 12. Conclusion
 
-The proposed architecture separates user requests from heavy AI processing using load balancing, asynchronous messaging and scalable worker services.
+The proposed AI Meeting Assistant architecture uses several Network Foundations concepts to create a system that can support increasing usage.
 
-This design helps the AI Meeting Assistant remain responsive, reliable, secure and available as the number of meetings increases.
+HTTPS and TLS provide secure communication. A load balancer distributes requests across multiple API servers. A message queue absorbs sudden increases in processing requests, while multiple workers process jobs in parallel. The system can scale horizontally by adding more servers and workers as demand increases.
+
+WebSocket can provide real-time notifications when meeting summaries are ready. Multiple workers and queued jobs also improve reliability by reducing the impact of individual component failures.
+
+Overall, the architecture is designed to keep the AI Meeting Assistant responsive, reliable, secure, available, and scalable as the number of meetings increases.
 
 
 
