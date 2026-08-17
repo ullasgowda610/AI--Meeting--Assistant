@@ -117,19 +117,9 @@ The proposed system uses multiple servers, a message queue, processing workers, 
 8. Results are stored in the database.
 9. The Notification Service informs the user when the summary is ready.
 
-## 6. Key Networking Concepts
+# 6. Component Responsibilities
 
-
-
-
-
-
-
-
-
-# 5. Component Responsibilities
-
-## 5.1 User / Client
+## 6.1 User / Client
 
 The employee uses the meeting-assistant application.
 
@@ -144,7 +134,7 @@ Communication with the backend uses HTTPS.
 
 ---
 
-## 5.2 HTTPS and TLS
+## 6.2 HTTPS and TLS
 
 The client communicates with the backend using **HTTPS**.
 
@@ -162,7 +152,7 @@ This is important because meeting transcripts and summaries may contain sensitiv
 
 ---
 
-## 5.3 Load Balancer
+## 6.3 Load Balancer
 
 The load balancer distributes incoming requests between multiple API servers.
 
@@ -185,7 +175,7 @@ This improves:
 
 ---
 
-## 5.4 API Servers
+## 6.4 API Servers
 
 API servers handle requests from users and communicate with internal services.
 
@@ -207,7 +197,7 @@ If demand increases, additional API server instances can be added.
 
 ---
 
-## 5.5 Message Queue
+## 6.5 Message Queue
 
 The message queue is used to temporarily store processing jobs.
 
@@ -243,7 +233,7 @@ This helps absorb traffic spikes.
 
 ---
 
-## 5.6 Processing Workers
+## 6.6 Processing Workers
 
 Workers perform the processing required for each meeting.
 
@@ -272,7 +262,7 @@ If the workload increases, more workers can be added.
 
 ---
 
-## 5.7 AI Processing
+## 6.7 AI Processing
 
 The AI processing component receives meeting transcripts and generates useful information.
 
@@ -294,7 +284,7 @@ The AI model itself is outside the main scope of this project. The project focus
 
 ---
 
-## 5.8 Database
+## 6.8 Database
 
 The database stores information such as:
 
@@ -309,7 +299,7 @@ The database allows users to retrieve meeting information later.
 
 ---
 
-## 5.9 WebSocket
+## 6.9 WebSocket
 
 WebSocket can be used to provide real-time notifications.
 
@@ -335,7 +325,7 @@ This helps provide a responsive user experience.
 
 ---
 
-# 6. Network Foundations Concepts Used
+## 7. Network Foundations Concepts Used
 
 | Concept                 | Application in this project                                                    |
 | ----------------------- | ------------------------------------------------------------------------------ |
@@ -353,21 +343,21 @@ This helps provide a responsive user experience.
 
 ---
 
-## 7. Reliability
+## 8. Reliability
 - Multiple instances
 - load-balancer health checks
 - durable queues
 - retries
 - database backups/replication and monitoring help prevent a single failure from stopping the service.
 
-## 8. Security
+## 9. Security
 - Use HTTPS/TLS
 - authentication
 - authorization/RBAC
 - encryption at rest
 - secure secret storage and audit logging.
 
-## 9. Scalability
+## 10. Scalability
 
 The architecture supports increasing usage by adding more application and processing instances.
 
@@ -387,4 +377,79 @@ Workers can also be increased based on queue length and system load.
 
 ---
 
-## 10.
+## 11. Demonstration Plan
+
+A simple demonstration can be used to show how the architecture behaves under different workloads.
+
+### Test 1 — Normal Load
+
+Send a small number of meeting-processing jobs.
+
+Expected result:
+
+```text
+Jobs → Queue → Workers → Completed
+```
+
+Processing should complete normally with low waiting time.
+
+### Test 2 — Increased Load
+
+Send a much larger number of jobs.
+
+Expected result:
+
+```text
+Many Jobs
+    ↓
+Queue
+    ↓
+Workers process jobs
+    ↓
+All jobs eventually complete
+```
+
+The queue prevents all requests from directly overwhelming the workers.
+
+### Test 3 — Scaling
+
+Run the same workload with different numbers of workers.
+
+For example:
+
+```text
+3 Workers → Processing time A
+
+6 Workers → Processing time B
+```
+
+The expected result is increased processing throughput when more workers are available.
+
+### Test 4 — Worker Failure
+
+Stop one worker while jobs are being processed.
+
+Expected result:
+
+```text
+Worker fails
+     ↓
+Job remains/retries
+     ↓
+Another worker processes it
+     ↓
+Job completes
+```
+
+This demonstrates fault tolerance.
+
+---
+
+
+
+
+
+
+
+
+
