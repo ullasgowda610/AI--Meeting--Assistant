@@ -43,3 +43,22 @@ The system therefore needs an architecture that can handle increased workload wi
 - Failure of one component could interrupt processing.
 - Meeting information needs secure communication.
 - The system must support increasing usage.
+
+## 3. Objectives
+
+The proposed architecture aims to:
+
+1. Keep the application responsive.
+2. Handle increasing numbers of meetings.
+3. Process multiple meeting jobs simultaneously.
+4. Handle sudden increases in workload.
+5. Continue processing when individual workers fail.
+6. Protect meeting data during communication.
+7. Maintain service availability.
+8. Provide real-time or near-real-time notifications.
+9. Demonstrate how Network Foundations concepts can solve a real-world system problem.
+
+## 4. Architecture
+
+
+## 5. System Work
