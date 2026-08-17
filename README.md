@@ -61,4 +61,18 @@ The proposed architecture aims to:
 ## 4. Architecture
 
 
-## 5. System Work
+## 5. System Workflow
+
+1. Employee participates in a virtual meeting.
+2. Meeting information is transmitted securely using HTTPS/TLS.
+3. The Load Balancer distributes incoming requests across available servers.
+4. The API Gateway performs authentication, validation and rate limiting.
+5. Processing requests are placed into a Message Queue.
+6. Transcription workers convert speech into text.
+7. The AI Summarization service generates summaries and action items.
+8. Results are stored in the database.
+9. The Notification Service informs the user when the summary is ready.
+
+## 6. Key Networking Concepts
+
+
