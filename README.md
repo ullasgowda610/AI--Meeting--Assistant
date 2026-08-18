@@ -64,7 +64,7 @@ The proposed architecture aims to:
 The proposed system uses multiple servers, a message queue, processing workers, secure communication, and real-time notifications.
 
 ### Architecture Flow
-![AI Meeting Assistant Architecture](AI-ASSISATNT-ARCHITECTURE.png)
+![AI Meeting Assistant Architecture](Architecture.png)
 
 ## 5. System Workflow
 
@@ -81,49 +81,20 @@ The proposed system uses multiple servers, a message queue, processing workers, 
 
 ## 6. Network Foundations Concepts Used
 
-  -----------------------------------------------------------------------
-  Concept                             Application in this project
-  ----------------------------------- -----------------------------------
-  **TCP/IP**                          Provides the basic communication
-                                      foundation between clients and
-                                      services.
 
-  **HTTP**                            Application-layer protocol used for
-                                      API communication.
-
-  **HTTPS**                           Secure form of HTTP used for
-                                      client-server communication.
-
-  **TLS**                             Encrypts and protects communication
-                                      containing meeting information.
-
-  **WebSocket**                       Provides persistent two-way
-                                      communication for real-time
-                                      notifications.
-
-  **Latency**                         Measures the delay between
-                                      submitting a request/job and
-                                      receiving or making the result
-                                      available.
-
-  **Throughput**                      Measures how many
-                                      meeting-processing jobs can be
-                                      completed over a period of time.
-
-  **Message Queue**                   Buffers jobs during periods of high
-                                      demand.
-
-  **Distributed Systems**             Multiple servers, services, and
-                                      workers cooperate over a network.
-
-  **Horizontal Scaling**              Additional application servers or
-                                      workers can be added as usage
-                                      increases.
-
-  **Fault Tolerance**                 Multiple instances, queued jobs,
-                                      retries, and health checks reduce
-                                      the impact of individual failures.
-  -----------------------------------------------------------------------
+| Concept | Application in this project |
+|---|---|
+| **TCP/IP** | Provides the basic communication foundation between clients and services. |
+| **HTTP** | Application-layer protocol used for API communication. |
+| **HTTPS** | Secure form of HTTP used for client-server communication. |
+| **TLS** | Encrypts and protects communication containing meeting information. |
+| **WebSocket** | Provides persistent two-way communication for real-time notifications. |
+| **Latency** | Measures the delay between submitting a request/job and receiving or making the result available. |
+| **Throughput** | Measures how many meeting-processing jobs can be completed over a period of time. |
+| **Message Queue** | Buffers jobs during periods of high demand. |
+| **Distributed Systems** | Multiple servers, services, and workers cooperate over a network. |
+| **Horizontal Scaling** | Additional application servers or workers can be added as usage increases. |
+| **Fault Tolerance** | Multiple instances, queued jobs, retries, and health checks reduce the impact of individual failures. |
 
 
 ## 7. Reliability
